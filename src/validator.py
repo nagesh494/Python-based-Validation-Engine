@@ -70,7 +70,7 @@ def validate(plan):
             errors.append(f"ERROR: Batch {b.get('batch_id')} has invalid datetime format: {ex}")
 
     # Check 1: Quantity conservation
-    # collect Order and Batch product_code and quantity_kg and see it match or Not
+    # collect Orders and Batch product_code and quantity_kg and see it match or Not
     from collections import defaultdict
     orders_sum = defaultdict(float)
     for o in orders:
@@ -89,7 +89,7 @@ def validate(plan):
             # instead for assert here only I am trying to collect all error's in json file
             # if PROD code not available in both batch and order then also it's handled here.
 
-    # Check 2: Equipment sizing and compatibility
+    # Check 2: Equipment Rules
     print(f'we have {len(batches)} Batches currently')
     for b in batches:
         bid = b.get("batch_id")
@@ -103,6 +103,8 @@ def validate(plan):
         max_c = float(eq.get("max_capacity_kg", 1e18))
         # compatibility
         allowed_products = eq.get("product_codes", [])
+        # In Batch selected product_code support this equipment or Not?
+        # In Batch quantity in range with equipment Min & Max supported.
         if b.get("product_code") not in allowed_products:
             errors.append(f"ERROR: Batch {bid} product {b.get('product_code')} not supported by equipment {eq_id} (allowed: {allowed_products}).")
         if qty < min_c:
@@ -110,7 +112,7 @@ def validate(plan):
         if qty > max_c:
             errors.append(f"ERROR: Batch {bid} ({qty} kg) is above max capacity ({max_c} kg) for {eq_id}.")
 
-    # Check 3: Downtimes & Holidays
+    # Check 3: Downtimes & Holidays (Scheduling Rules)
     # parse downtimes and holidays to ranges
 
     dt_by_eq = {} # downtime id , Start and End Time
@@ -138,7 +140,7 @@ def validate(plan):
             if overlaps(s,e,hs,he):
                 errors.append(f"ERROR: Batch {bid} ({s.isoformat()} - {e.isoformat()}) overlaps holiday '{h_name}' ({hs.isoformat()} - {he.isoformat()}).")
 
-    # Check 4: No equipment overlaps
+    # Check 4: Time Validations
     batches_by_eq = {}
     # map eq_name to all batches using this eq_name. in 2 batch may use same eq.
     for b in batches:

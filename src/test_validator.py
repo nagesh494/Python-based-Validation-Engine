@@ -1,4 +1,5 @@
 import subprocess, sys, pathlib
+# No exact path , No hard code just if we follow this structure everything will work.
 HERE = pathlib.Path(__file__).parent / "test_data" # means the folder containing this test file. and add sub folder
 VALID = HERE / "valid_plan.json"
 INVALIDS = [
