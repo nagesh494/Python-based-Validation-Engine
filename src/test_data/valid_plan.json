@@ -1,0 +1,82 @@
+{
+  "plan_id": "PLAN-2025-10-20-001",
+  "plan_generated_at": "2025-10-20T12:00:00Z",
+  "inputs": {
+    "product_orders": [
+      {
+        "order_id": "ORD-1001",
+        "product_code": "PROD-A",
+        "quantity_kg": 2000.0
+      },
+      {
+        "order_id": "ORD-1002",
+        "product_code": "PROD-B",
+        "quantity_kg": 500.0
+      },
+      {
+        "order_id": "ORD-1003",
+        "product_code": "PROD-B",
+        "quantity_kg": 0.0
+      }
+    ],
+    "equipment": [
+      {
+        "equipment_id": "REACTOR-01",
+        "product_codes": [
+          "PROD-A"
+        ],
+        "min_capacity_kg": 500.0,
+        "max_capacity_kg": 2000.0
+      },
+      {
+        "equipment_id": "MIXER-03",
+        "product_codes": [
+          "PROD-B"
+        ],
+        "min_capacity_kg": 100.0,
+        "max_capacity_kg": 1000.0
+      }
+    ],
+    "constraints": {
+      "downtimes": [],
+      "holidays": []
+    }
+  },
+  "outputs": {
+    "production_batches": [
+      {
+        "batch_id": "BATCH-7001",
+        "product_code": "PROD-A",
+        "quantity_kg": 1000.0,
+        "equipment_id": "REACTOR-01",
+        "start_time": "2025-10-21T08:00:00Z",
+        "end_time": "2025-10-21T12:00:00Z",
+        "source_order_ids": [
+          "ORD-1001"
+        ]
+      },
+      {
+        "batch_id": "BATCH-7002",
+        "product_code": "PROD-A",
+        "quantity_kg": 1000.0,
+        "equipment_id": "REACTOR-01",
+        "start_time": "2025-10-21T12:00:00Z",
+        "end_time": "2025-10-21T16:00:00Z",
+        "source_order_ids": [
+          "ORD-1001"
+        ]
+      },
+      {
+        "batch_id": "BATCH-7003",
+        "product_code": "PROD-B",
+        "quantity_kg": 500.0,
+        "equipment_id": "MIXER-03",
+        "start_time": "2025-10-21T09:00:00Z",
+        "end_time": "2025-10-21T11:00:00Z",
+        "source_order_ids": [
+          "ORD-1002"
+        ]
+      }
+    ]
+  }
+}
